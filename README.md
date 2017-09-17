@@ -1,2 +1,3 @@
 # pylibol
-python version of libol
+
+LIBOL with python interface that close to sklearn.
