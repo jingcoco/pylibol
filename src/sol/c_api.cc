@@ -110,20 +110,20 @@ void sol_GetModelParameters(void* model, sol_get_parameter_callback callback,
   GetModelParameters(model_info, callback, user_context);
 }
 
-float sol_Train(void* model, void* data_iter) {
+float sol_Train(void* model, void* data_iter, long long* data_no, long long* iter_no, float* err_no, float*time_no, long long* update_no, int* table_size) {
   Model* m = (Model*)(model);
   DataIter* iter = (DataIter*)(data_iter);
-  return m->Train(*iter);
+  return m->Train(*iter,data_no,iter_no,err_no,time_no,update_no,table_size);
 }
 
-float sol_Test(void* model, void* data_iter, const char* output_path) {
+float sol_Test(void* model, void* data_iter, const char* output_path,  float* tpr_fig, float*fpr_fig, float* tpr_tab, float* fpr_tab, float* auc) {
   Model* m = (Model*)(model);
   DataIter* iter = (DataIter*)(data_iter);
   if (output_path != nullptr) {
     ofstream out_file(output_path, ios::out);
-    return m->Test(*iter, &out_file);
+    return m->Test(*iter, &out_file,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc);
   } else {
-    return m->Test(*iter, nullptr);
+	  return m->Test(*iter, nullptr, tpr_fig, fpr_fig, tpr_tab, fpr_tab, auc);
   }
 }
 

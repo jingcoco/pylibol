@@ -51,7 +51,8 @@ class SOL_EXPORTS Model {
   /// \param data_iter data iterator
   //
   /// \return training error rate
-  virtual float Train(pario::DataIter &data_iter) = 0;
+	 //modified by Jing
+	 virtual float Train(pario::DataIter &data_iter, long long* data_no, long long* iter_no, float* err_no, float*time_no, long long* update_no, int* table_size) = 0;
 
   /// \brief  Test a dataset
   ///
@@ -59,7 +60,7 @@ class SOL_EXPORTS Model {
   /// \param os output stream to store the predicted results
   ///
   /// \return test error rate
-  float Test(pario::DataIter &data_iter, std::ostream *os);
+	 float Test(pario::DataIter &data_iter, std::ostream *os, float* tpr_fig, float*fpr_fig, float* tpr_tab, float* fpr_tab, float* auc);
 
  public:
   /// \brief  initialize the model for training

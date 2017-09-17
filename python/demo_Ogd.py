@@ -29,17 +29,17 @@ print(clf.coef_)
 print("decision function")
 print(clf.decision_function(X_test))
 
+score_accuracy,auc=clf.score(X_test,Y_test)
+print(score_accuracy,auc)
 clf.save("ogd_model_pylibol")
 
+"""
 print("along the learning process")
 clf_2=Ogd(eta=0.1,power_t=0.5)
 print(clf_2.fit(X_train[0:100],Y_train[0:100]))
 print(clf_2.fit(X_train[100:200],Y_train[100:200]))
 print(clf_2.fit(X_train[200:300],Y_train[200:300]))
 print(clf_2.fit(X_train[300:400],Y_train[300:400]))
-
-
-
-
+"""
 
 

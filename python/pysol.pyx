@@ -148,7 +148,7 @@ cdef class SOL:
         cdef np.ndarray[float, ndim=1, mode="c"] w = np.zeros((d,),dtype=np.float32)
         sol_Getw(self._c_model, cls_id,&w[0])
         return w
-
+    
     def inspect_learning(self, iterate_handler):
         if self._c_model is not NULL:
             sol_InspectOnlineIteration(self._c_model, inspect_iteration, <void*>iterate_handler)
@@ -217,9 +217,33 @@ cdef class SOL:
         assert self._c_model is not NULL, "model is not initialized"
 
         self.__load_data(param1, param2, pass_num)
+        #modified by Jing
+        #long long data_no, long long iter_no,float err_no,float time_no, long long update_no
+        table_size=np.ceil(np.log2(param1.shape[0])).astype(int)
+        cdef np.ndarray[long long, ndim=1, mode="c"] data_no = np.zeros((table_size,),dtype=np.int64)
 
-        return 1 - sol_Train(self._c_model, self._c_data_iter)
+        cdef np.ndarray[long long, ndim=1, mode="c"] iter_no = np.zeros((table_size,),dtype=np.int64)
 
+        cdef np.ndarray[float, ndim=1, mode="c"] err_no = np.zeros((table_size,),dtype=np.float32)
+
+        cdef np.ndarray[float, ndim=1, mode="c"] time_no = np.zeros((table_size,),dtype=np.float32)
+
+        cdef np.ndarray[long long, ndim=1, mode="c"] update_no = np.zeros((table_size,),dtype=np.int64)
+        cdef int table_size2=0
+        
+        err_rate=sol_Train(self._c_model, self._c_data_iter,&data_no[0],&iter_no[0],&err_no[0],&time_no[0],&update_no[0],&table_size2)		
+
+        update= update_no[:table_size2]
+        data=data_no[:table_size2]     
+        iter=iter_no[:table_size2]
+        err=err_no[:table_size2]
+        time=time_no[:table_size2]
+
+        #leave space for congbo
+		
+		
+        return 1-err_rate,update,data,iter,err,time
+		
     def score(self, param1, param2):
         """Returns the mean accuracy on the given test data and labels
 
@@ -237,8 +261,16 @@ cdef class SOL:
         assert self._c_model is not NULL, "model is not initialized"
 
         self.__load_data(param1, param2, 1)
+		
+        cdef np.ndarray[float, ndim=1, mode="c"] tpr_fig = np.zeros((21,),dtype=np.float32)
+        cdef np.ndarray[float, ndim=1, mode="c"] fpr_fig = np.zeros((21,),dtype=np.float32)
+        cdef np.ndarray[float, ndim=1, mode="c"] tpr_tab = np.zeros((6,),dtype=np.float32)
+        cdef np.ndarray[float, ndim=1, mode="c"] fpr_tab = np.zeros((6,),dtype=np.float32)
+        cdef float auc=0
+        err_rate=sol_Test(self._c_model, self._c_data_iter, NULL,&tpr_fig[0],&fpr_fig[0],&tpr_tab[0],&fpr_tab[0],&auc)
+        #leave space for congbo
 
-        return 1 - sol_Test(self._c_model, self._c_data_iter, NULL)
+        return 1-err_rate,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc
 
     def decision_function(self, param1, param2 = None, get_labels = False):
         """Predict confidence scores for samples in X

@@ -19,6 +19,8 @@ namespace model {
 
 class OnlineModel : public Model {
  public:
+	 int table_index;//modified by Jing
+	 double start_time;//modified by Jing
   OnlineModel(int class_num, const std::string& type);
 
   virtual ~OnlineModel();
@@ -37,7 +39,8 @@ class OnlineModel : public Model {
   /// \param data_iter data iterator
   //
   /// \return training error rate
-  virtual float Train(pario::DataIter& data_iter);
+  //modified by Jing
+  virtual float Train(pario::DataIter& data_iter, long long* data_no, long long* iter_no, float* err_no, float*time_no, long long* update_no, int* table_size);
 
  public:
   /// \brief  iterate the model with one new instance

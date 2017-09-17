@@ -65,6 +65,8 @@ OnlineModel::OnlineModel(int class_num, const std::string& type)
       iter_displayer_(nullptr),
       iter_callback_(nullptr) {
   this->cur_data_num_ = 0;
+ 
+  
   this->cur_err_num_ = 0;
   this->set_initial_t(0);
   this->lazy_update_ = false;
@@ -128,8 +130,8 @@ void OnlineModel::BeginTrain() {
 
   Model::BeginTrain();
 }
-
-float OnlineModel::Train(DataIter& data_iter) {
+//modified by Jing
+float OnlineModel::Train(DataIter& data_iter, long long* data_no,long long* iter_no, float* err_no,float*time_no ,long long* update_no,int* table_size) {
   if (this->require_reinit_) {
     // re-init the model
     try {
@@ -142,7 +144,8 @@ float OnlineModel::Train(DataIter& data_iter) {
   }
 
   size_t next_show_time = size_t(-1);
-
+  this->table_index = 0;//modified by Jing
+  this->start_time = sol::get_current_time();//modified by Jing
   if (this->iter_displayer_ != nullptr) {
     next_show_time = this->iter_displayer_->next_show_time();
     if (this->iter_callback_ == DefaultIterateFunction &&
@@ -171,6 +174,20 @@ float OnlineModel::Train(DataIter& data_iter) {
                                this->cur_data_num_, this->cur_iter_num(),
                                this->update_num(), err_rate);
         }
+
+
+		if (data_no != NULL)//modified by Jing
+		{
+			data_no[table_index] = cur_data_num_;
+			iter_no[table_index] = cur_iter_num();
+			err_no[table_index] = err_rate;
+			
+			update_no[table_index] =  update_num();
+			time_no[table_index] = float(sol::get_current_time()-this->start_time);
+		}
+		table_index++;
+
+
         this->iter_displayer_->next();
         next_show_time = this->iter_displayer_->next_show_time();
       }
@@ -185,6 +202,18 @@ float OnlineModel::Train(DataIter& data_iter) {
                            this->update_num(), err_rate);
     }
   }
+
+  if (data_no != NULL)//modified by Jing
+  {
+	  data_no[table_index] = cur_data_num_;
+	  iter_no[table_index] = cur_iter_num();
+	  err_no[table_index] = err_rate;
+	  update_no[table_index] = update_num();
+	  time_no[table_index] = float(sol::get_current_time() - this->start_time);
+	  table_index++;
+	  *table_size = table_index;
+  }
+
   delete[] predicts;
   this->model_updated_ = true;
 

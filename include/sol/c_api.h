@@ -115,7 +115,7 @@ SOL_EXPORTS void sol_GetModelParameters(void* model,
 /// \param data_iter data iterator
 ///
 /// \return training accuracy
-SOL_EXPORTS float sol_Train(void* model, void* data_iter);
+SOL_EXPORTS float sol_Train(void* model, void* data_iter, long long* data_no, long long* iter_no, float* err_no, float*time_no, long long* update_no, int* table_size);
 
 /// \brief  test a model
 ///
@@ -126,7 +126,7 @@ SOL_EXPORTS float sol_Train(void* model, void* data_iter);
 ///
 /// \return test accuracy
 SOL_EXPORTS float sol_Test(void* model, void* data_iter,
-                           const char* output_path);
+	const char* output_path, float* tpr_fig, float*fpr_fig, float* tpr_tab, float* fpr_tab, float* auc);
 
 /// \brief  C type to predict detailed scores
 ///

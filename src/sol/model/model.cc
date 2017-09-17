@@ -23,6 +23,12 @@ using namespace sol::pario;
 namespace sol {
 namespace model {
 
+// comparison function
+bool comp(pair<int, double> a, pair<int, double> b)
+{
+	return(a.second > b.second);
+}
+
 Model* Model::Create(const std::string& name, int class_num) {
   auto create_func = CreateObject<Model>(std::string(name) + "_model");
   Model* ins = nullptr;
@@ -114,7 +120,7 @@ void Model::SetParameter(const std::string& name, const std::string& value) {
   }
 }
 
-float Model::Test(DataIter& data_iter, std::ostream* os) {
+float Model::Test(DataIter& data_iter, std::ostream* os,float* tpr_fig, float*fpr_fig, float* tpr_tab, float* fpr_tab,float* auc_out) {
   if (this->model_updated_) this->EndTrain();
 
   size_t err_num = 0;
@@ -123,6 +129,9 @@ float Model::Test(DataIter& data_iter, std::ostream* os) {
   if (os != nullptr) {
     (*os) << "label\tpredict\tscores\n";
   }
+
+  vector<pair<int, double>> prediction;//by Jing
+
 
   float* predicts = new float[this->clf_num()];
   MiniBatch* mb = nullptr;
@@ -135,6 +144,14 @@ float Model::Test(DataIter& data_iter, std::ostream* os) {
       this->PreProcess(x);
       // predict
       label_t label = this->Predict(x, predicts);
+
+	  //by Jing for auc calculation, only for binary classification
+	  if (tpr_fig != NULL)
+	  {
+		  prediction.push_back(pair<int, double>(x.label(), predicts[0]));
+	  }
+
+
       if (label != x.label()) err_num++;
       if (os != nullptr) {
         (*os) << x.label() << "\t" << label;
@@ -147,6 +164,74 @@ float Model::Test(DataIter& data_iter, std::ostream* os) {
     }
   }
   delete[] predicts;
+
+
+  //by Jing
+
+  if (tpr_fig != NULL)
+  {
+	  int positive = 0;
+	  int negative = 0;
+
+	  for (int i = 0; i < prediction.size(); i++)
+	  {
+		  if (prediction[i].first > 0)
+			  positive++;
+		  else
+			  negative++;
+	  }
+
+	  sort(prediction.begin(), prediction.end(), comp);
+
+	  int TP = 0;
+	  int FP = 0;
+
+
+	  long long AUC = 0;
+
+	  float target_TP = 1;
+	  float target_FPR = 1e-5;
+
+	  int index = 0;
+	  int index2 = 0;
+	  for (int i = 0; i < prediction.size(); i++)
+	  {
+		  if (prediction[i].first > 0)
+		  {
+			  TP++;
+			  //calculate the AUC
+			  AUC = AUC + FP;
+		  }
+		  else
+		  {
+			  FP++;
+		  }
+
+		  float frequence = 0.05;
+		  if ((TP > target_TP) || (i == prediction.size() - 1))
+		  {
+			  target_TP = target_TP + frequence*positive;
+
+			  tpr_fig[index] = (float)TP / positive;
+			  fpr_fig[index]= (float)FP / negative;
+			  index++;
+		  }
+
+		  if ((FP > target_FPR*negative) || (i == prediction.size() - 1))
+		  {
+			  fpr_tab[index2]=target_FPR;
+			  tpr_tab[index2]=(float)TP / positive;
+			  target_FPR = target_FPR * 10;
+			  index2++;
+		  }
+	  }
+
+	  *auc_out = 1 - ((float)AUC / positive) / negative;
+  }
+
+
+
+
   return float(double(err_num) / data_num);
 }
 

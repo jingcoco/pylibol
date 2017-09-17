@@ -16,8 +16,9 @@ cdef extern from "sol/c_api.h":
     int sol_SetModelParameter(void* model, const char* param_name, const char* param_val)
     ctypedef void (*get_parameter_callback)(void* user_context, const char* param_name, const char* param_val)
     int sol_GetModelParameters(void* model, get_parameter_callback callback, void* user_context)
-    float sol_Train(void* model, void* data_iter)
-    float sol_Test(void* model, void* data_iter, const char* output_path)
+    #modified by Jing
+    float sol_Train(void* model, void* data_iter,void* data_no, void* iter_no,void* err_no,void*time_no, void* update_no,int* table_size);
+    float sol_Test(void* model, void* data_iter,const char* output_path, float* tpr_fig, float*fpr_fig, float* tpr_tab, float* fpr_tab, float* auc);
     ctypedef void (*sol_predict_callback)(void* user_context, double label, double predict, int cls_num, float* scores)
     int sol_Predict(void* model, void* data_iter, sol_predict_callback callback, void* user_context)
     float sol_model_sparsity(void* model)

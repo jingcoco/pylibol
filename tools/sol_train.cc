@@ -86,7 +86,8 @@ int train(cmdline::parser& parser) {
 
   cout << "Model Information: \n" << model->model_info() << "\n";
   double start_time = sol::get_current_time();
-  float err_rate = model->Train(iter);
+
+  float err_rate = model->Train(iter, NULL, NULL, NULL, NULL, NULL, NULL);//modified by jing
   double end_time = sol::get_current_time();
   fprintf(stdout, "training accuracy: %.4f\n", 1.f - err_rate);
   fprintf(stdout, "training time: %.3f seconds\n", end_time - start_time);

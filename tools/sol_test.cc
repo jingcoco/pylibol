@@ -73,10 +73,10 @@ int test(cmdline::parser& parser) {
   float err_rate;
   if (!output_path.empty()) {
     ofstream out_file(output_path.c_str(), ios::out);
-    err_rate = model->Test(iter, &out_file);
+	err_rate = model->Test(iter, &out_file, NULL, NULL, NULL, NULL, NULL);
     out_file.close();
   } else {
-    err_rate = model->Test(iter, nullptr);
+	  err_rate = model->Test(iter, nullptr, NULL, NULL, NULL, NULL, NULL);
   }
   double end_time = sol::get_current_time();
   fprintf(stdout, "test accuracy: %.4f\n", 1.f - err_rate);

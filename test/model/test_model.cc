@@ -124,7 +124,8 @@ int test_algo(const std::string& algo, const std::string& train_path,
   if (ret != Status_OK) return ret;
 
   double start_time = sol::get_current_time();
-  accu = roundp(model->Train(iter), 4);
+  int size_table;
+  accu = roundp(model->Train(iter, NULL, NULL, NULL, NULL, NULL, NULL), 4);//modified by Jing
   update_num = model->update_num();
   double end_time = sol::get_current_time();
   fprintf(stdout, "Test algorithm: %s\n", algo.c_str());

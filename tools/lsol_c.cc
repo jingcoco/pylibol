@@ -88,9 +88,8 @@ int train(cmdline::parser& parser) {
                        parser.get<string>("format").c_str(),
                        parser.get<int>("pass"));
   }
-
   if (ret == Status_OK) {
-    float accu = sol_Train(model, data_iter);
+	  float accu = sol_Train(model, data_iter, NULL, NULL, NULL, NULL, NULL, NULL);//modified by jing
     fprintf(stdout, "training accuracy: %.4f\n", accu);
 
     // save model
@@ -134,7 +133,7 @@ int test(cmdline::parser& parser) {
       output_path = parser.get<string>("output").c_str();
     }
 
-    float accu = sol_Test(model, data_iter, output_path);
+	float accu = sol_Test(model, data_iter, output_path, NULL, NULL, NULL, NULL, NULL);
     fprintf(stdout, "test accuracy: %.4f\n", accu);
   }
 
