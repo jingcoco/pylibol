@@ -1,0 +1,8 @@
+data number  : 30956
+feat number  : 429272
+dimension    : 119
+nonzero feat : 119
+class num    : 2
+data sparsity: 0.83%
+data number of class -1 : 23510
+data number of class 1 : 7446
