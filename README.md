@@ -5,7 +5,7 @@ LIBOL with python interface that close to sklearn.
 Installation
 ===========================================================================
 
-SOL features a very simple installation procedure. 
+pylibol features a very simple installation procedure. 
 
 Users can either install the C++ executables or python scripts. They provide similar interfaces (**sol_train** for training and **sol_test** for testing). To choose the best method:
 
