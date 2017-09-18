@@ -16,7 +16,7 @@ Y_test=numpy.concatenate([iris.target[40:50],iris.target[90:100]])
 # ogd
 
 print("ogd")
-clf=SGDClassifier(loss='hinge',penalty="l2",max_iter=100)
+clf=SGDClassifier(loss='hinge',penalty="l2")
 clf.fit(X_train,Y_train)
 
 print(clf.coef_)

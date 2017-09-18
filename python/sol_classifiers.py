@@ -14,14 +14,6 @@ class ogd:
 			return self.classifier.fit(X,Y) 	    
 		except AttributeError as e:
 			self.classifier=pysol.SOL('ogd',num_class,**self.params)
-			accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
-			plt.figure
-			plt.plot(data,err,"r*")
-			plt.plot(data,err,label="test",color="red",linewidth=2)
-			plt.xlabel("data")
-			plt.ylabel("error")
-			plt.legend()
-			plt.show()
 			return accuracy
 	@property
 	def coef_(self, cls_id=0):

@@ -1,34 +1,41 @@
 import numpy
 import scipy
-from sklearn.datasets import load_svmlight_file
-from sklearn import datasets
-from classifiers import Pa
 import time
+from sklearn.datasets import load_svmlight_file
+from classifiers import Pa
 
-iris=datasets.load_iris()
 X_train,Y_train=load_svmlight_file("../data/a1a.t")
 X_test,Y_test=load_svmlight_file("../data/a1a")
 
+
 start_time = time.time()
 clf=Pa()
-train_accuracy=clf.fit(X_train,Y_train)
+train_accuracy=clf.fit(X_train,Y_train,True)
+
+
 print("training accuracy:")
 print(train_accuracy)
 train_time = time.time() - start_time
-print("training time cost")
+print("training time")
 print(train_time)
 
-print("sparsity")
+print("Model sparsity")
 print(clf.sparsity)
 
-print("prediction of instance")
-y=clf.predict(X_test[:10])
-print(y)
+print("Instance prediction")
+print(clf.predict(X_test))
 
-print("model weight")
+print("Model weight")
 print(clf.coef_)
 
-print("decision function")
+print("Predict confidence scores for samples in X")
 print(clf.decision_function(X_test))
 
-clf.save("Pa_model")
+
+test_accuracy,auc=clf.score(X_test,Y_test,True)
+print("Test accuracy")
+print(test_accuracy)
+print("AUC")
+print(auc)
+
+clf.save("ogd_model_pylibol")
