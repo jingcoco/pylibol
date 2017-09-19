@@ -9,7 +9,10 @@ X_test,Y_test=load_svmlight_file("../data/a1a")
 
 print("along the learning process")
 clf=Ogd(eta=0.1,power_t=0.5)
-print(clf.fit(X_train,Y_train,True))
-print(clf.fit(X_train,Y_train,True))
-print(clf.fit(X_train,Y_train,True))
 
+train_accuracy,data,err,fit_time=clf.fit(X_train,Y_train,True)
+print(train_accuracy)
+train_accuracy,data,err,fit_time=clf.fit(X_train,Y_train,True)
+print(train_accuracy)
+train_accuracy,data,err,fit_time=clf.fit(X_train,Y_train,True)
+print(train_accuracy)
