@@ -10,7 +10,7 @@ X_test,Y_test=load_svmlight_file("../data/a1a")
 
 start_time = time.time()
 clf=Ogd(eta=0.1,power_t=0.5)
-train_accuracy=clf.fit(X_train,Y_train,True)
+train_accuracy,data,err,fit_time=clf.fit(X_train,Y_train,True)
 
 
 print("training accuracy:")
