@@ -102,7 +102,7 @@ class Ogd(Algorithm):
 				
 			return train_accuracy,self.data,self.err,self.time
 		except AttributeError as e:
-			self.classifier=pysol.SOL('ogd',num_class,**self.params)
+			self.classifier=pysol.SOL('Ogd',num_class,**self.params)
 			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
 			
 			if(showDraw == True):
@@ -209,14 +209,14 @@ class Cw(Algorithm):
 			
 			if(showDraw == True):
 				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Cw")	
-			return train_accuracy 
+			return self.train_accuracy,self.data,self.err,self.time 
 		except AttributeError as e:
 			self.classifier=pysol.SOL('Cw',num_class,**self.params)
 			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
 			
 			if(showDraw == True):
 				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Cw")
-			return self.train_accuracy
+			return self.train_accuracy,self.data,self.err,self.time 
 			
 	def score(self,X,Y,showDraw=False):
 		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
@@ -224,27 +224,43 @@ class Cw(Algorithm):
 		if(showDraw == True):
 			self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Cw")
 		
-		return accuracy,auc
-"""
+		return self.train_accuracy,self.data,self.err,self.time
+
+		
+	
 class Pa1(Algorithm):
 	def __init__(self,**params):
 		self.params=params
 
-	def fit(self,X,Y):
+	def fit(self,X,Y,showDraw=False):
 		num_class=len(set(Y))
 		try: 
 			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
-			self.drawFit(data,err,"data","error",data,update,"data","update",data,time,"data","time","Pa1")
-			return train_accuracy	    
+		
+			self.update=numpy.concatenate((self.update,update))
+			self.data=numpy.concatenate((self.data,data))
+			self.iter=numpy.concatenate((self.iter,iter))
+			self.err=numpy.concatenate((self.err,err))
+			time=time+self.time[-1]
+			self.time=numpy.concatenate((self.time,time))
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Pa1")	
+			return self.train_accuracy,self.data,self.err,self.time  
 		except AttributeError as e:
 			self.classifier=pysol.SOL('Pa1',num_class,**self.params)
-			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
-			self.drawFit(data,err,"data","error",data,update,"data","update",data,time,"data","time","Pa1")
-			return train_accuracy
+			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
 			
-	def score(self,X,Y):
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Pa1")
+			return self.train_accuracy,self.data,self.err,self.time 
+			
+	def score(self,X,Y,showDraw=False):
 		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
-		self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Pa1")
+		
+		if(showDraw == True):
+			self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Pa1")
+		
 		return accuracy,auc
 
 
@@ -254,21 +270,35 @@ class Pa2(Algorithm):
 	def __init__(self,**params):
 		self.params=params
 
-	def fit(self,X,Y):
+	def fit(self,X,Y,showDraw=False):
 		num_class=len(set(Y))
 		try: 
 			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
-			self.drawFit(data,err,"data","error",data,update,"data","update",data,time,"data","time","Pa2")
-			return train_accuracy	    
+		
+			self.update=numpy.concatenate((self.update,update))
+			self.data=numpy.concatenate((self.data,data))
+			self.iter=numpy.concatenate((self.iter,iter))
+			self.err=numpy.concatenate((self.err,err))
+			time=time+self.time[-1]
+			self.time=numpy.concatenate((self.time,time))
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Pa2")	
+			return self.train_accuracy,self.data,self.err,self.time 
 		except AttributeError as e:
 			self.classifier=pysol.SOL('Pa2',num_class,**self.params)
-			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
-			self.drawFit(data,err,"data","error",data,update,"data","update",data,time,"data","time","Pa2")
-			return train_accuracy
+			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
 			
-	def score(self,X,Y):
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Pa2")
+			return self.train_accuracy,self.data,self.err,self.time 
+			
+	def score(self,X,Y,showDraw=False):
 		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
-		self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Pa2")
+		
+		if(showDraw == True):
+			self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Pa2")
+		
 		return accuracy,auc
 
 
@@ -277,21 +307,35 @@ class Ada_fobos_l1(Algorithm):
 	def __init__(self,**params):
 		self.params=params
 
-	def fit(self,X,Y):
+	def fit(self,X,Y,showDraw=False):
 		num_class=len(set(Y))
 		try: 
 			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
-			self.drawFit(data,err,"data","error",data,update,"data","update",data,time,"data","time","Ada_fobos_l1")
-			return train_accuracy	    
+		
+			self.update=numpy.concatenate((self.update,update))
+			self.data=numpy.concatenate((self.data,data))
+			self.iter=numpy.concatenate((self.iter,iter))
+			self.err=numpy.concatenate((self.err,err))
+			time=time+self.time[-1]
+			self.time=numpy.concatenate((self.time,time))
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Ada_fobos_l1")	
+			return self.train_accuracy,self.data,self.err,self.time 
 		except AttributeError as e:
 			self.classifier=pysol.SOL('Ada_fobos_l1',num_class,**self.params)
-			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
-			self.drawFit(data,err,"data","error",data,update,"data","update",data,time,"data","time","Ada_fobos_l1")
-			return train_accuracy
+			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
 			
-	def score(self,X,Y):
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Ada_fobos_l1")
+			return self.train_accuracy,self.data,self.err,self.time 
+			
+	def score(self,X,Y,showDraw=False):
 		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
-		self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Ada_fobos_l1")
+		
+		if(showDraw == True):
+			self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Ada_fobos_l1")
+		
 		return accuracy,auc
 
 
@@ -300,21 +344,35 @@ class Ada_fobos(Algorithm):
 	def __init__(self,**params):
 		self.params=params
 
-	def fit(self,X,Y):
+	def fit(self,X,Y,showDraw=False):
 		num_class=len(set(Y))
 		try: 
 			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
-			self.drawFit(data,err,"data","error",data,update,"data","update",data,time,"data","time","Ada_fobos")
-			return train_accuracy	    
+		
+			self.update=numpy.concatenate((self.update,update))
+			self.data=numpy.concatenate((self.data,data))
+			self.iter=numpy.concatenate((self.iter,iter))
+			self.err=numpy.concatenate((self.err,err))
+			time=time+self.time[-1]
+			self.time=numpy.concatenate((self.time,time))
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Ada_fobos")	
+			return self.train_accuracy,self.data,self.err,self.time  
 		except AttributeError as e:
 			self.classifier=pysol.SOL('Ada_fobos',num_class,**self.params)
-			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
-			self.drawFit(data,err,"data","error",data,update,"data","update",data,time,"data","time","Ada_fobos")
-			return train_accuracy
+			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
 			
-	def score(self,X,Y):
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Ada_fobos")
+			return self.train_accuracy,self.data,self.err,self.time 
+			
+	def score(self,X,Y,showDraw=False):
 		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
-		self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Ada_fobos")
+		
+		if(showDraw == True):
+			self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Ada_fobos")
+		
 		return accuracy,auc
 
 
@@ -323,24 +381,36 @@ class Ada_rda(Algorithm):
 	def __init__(self,**params):
 		self.params=params
 
-	def fit(self,X,Y):
+	def fit(self,X,Y,showDraw=False):
 		num_class=len(set(Y))
 		try: 
 			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
-			self.drawFit(data,err,"data","error",data,update,"data","update",data,time,"data","time","Ada_rda")
-			return train_accuracy	    
+		
+			self.update=numpy.concatenate((self.update,update))
+			self.data=numpy.concatenate((self.data,data))
+			self.iter=numpy.concatenate((self.iter,iter))
+			self.err=numpy.concatenate((self.err,err))
+			time=time+self.time[-1]
+			self.time=numpy.concatenate((self.time,time))
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Ada_rda")	
+			return self.train_accuracy,self.data,self.err,self.time 
 		except AttributeError as e:
 			self.classifier=pysol.SOL('Ada_rda',num_class,**self.params)
-			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
-			self.drawFit(data,err,"data","error",data,update,"data","update",data,time,"data","time","Ada_rda")
-			return train_accuracy
+			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
 			
-	def score(self,X,Y):
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Ada_rda")
+			return self.train_accuracy,self.data,self.err,self.time 
+			
+	def score(self,X,Y,showDraw=False):
 		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
-		self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Ada_rda")
+		
+		if(showDraw == True):
+			self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Ada_rda")
+		
 		return accuracy,auc
-
-
 
 
 
@@ -348,21 +418,35 @@ class Ada_rda_l1(Algorithm):
 	def __init__(self,**params):
 		self.params=params
 
-	def fit(self,X,Y):
+	def fit(self,X,Y,showDraw=False):
 		num_class=len(set(Y))
 		try: 
 			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
-			self.drawFit(data,err,"data","error",data,update,"data","update",data,time,"data","time","Ada_rda_l1")
-			return train_accuracy	    
-		except AttributeError as e:
-			self.classifier=pysol.SOL('Ada_rda_l1',num_class,**self.params)
-			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
-			self.drawFit(data,err,"data","error",data,update,"data","update",data,time,"data","time","Ada_rda_l1")
-			return train_accuracy
+		
+			self.update=numpy.concatenate((self.update,update))
+			self.data=numpy.concatenate((self.data,data))
+			self.iter=numpy.concatenate((self.iter,iter))
+			self.err=numpy.concatenate((self.err,err))
+			time=time+self.time[-1]
+			self.time=numpy.concatenate((self.time,time))
 			
-	def score(self,X,Y):
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Ada_rda_l1")	
+			return self.train_accuracy,self.data,self.err,self.time  
+		except AttributeError as e:
+			self.classifier=pysol.SOL('Ada-rda-l1',num_class,**self.params)
+			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Ada_rda_l1")
+			return self.train_accuracy,self.data,self.err,self.time 
+			
+	def score(self,X,Y,showDraw=False):
 		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
-		self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Ada_rda_l1")
+		
+		if(showDraw == True):
+			self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Ada_rda_l1")
+		
 		return accuracy,auc
 
 
@@ -370,213 +454,443 @@ class Alma2(Algorithm):
 	def __init__(self,**params):
 		self.params=params
 
-	def fit(self,X,Y):
+	def fit(self,X,Y,showDraw=False):
 		num_class=len(set(Y))
 		try: 
 			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
-			self.drawFit(data,err,"data","error",data,update,"data","update",data,time,"data","time","Alma2")
-			return train_accuracy	    
+		
+			self.update=numpy.concatenate((self.update,update))
+			self.data=numpy.concatenate((self.data,data))
+			self.iter=numpy.concatenate((self.iter,iter))
+			self.err=numpy.concatenate((self.err,err))
+			time=time+self.time[-1]
+			self.time=numpy.concatenate((self.time,time))
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Alma2")	
+			return self.train_accuracy,self.data,self.err,self.time 
 		except AttributeError as e:
 			self.classifier=pysol.SOL('Alma2',num_class,**self.params)
-			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
-			self.drawFit(data,err,"data","error",data,update,"data","update",data,time,"data","time","Alma2")
-			return train_accuracy
+			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
 			
-	def score(self,X,Y):
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Alma2")
+			return self.train_accuracy,self.data,self.err,self.time 
+			
+	def score(self,X,Y,showDraw=False):
 		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
-		self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Alma2")
+		
+		if(showDraw == True):
+			self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Alma2")
+		
 		return accuracy,auc
 
-
-
-
-
-
-
-
-
+		
 
 
 class Eccw(Algorithm):
 	def __init__(self,**params):
 		self.params=params
 
-	def fit(self,X,Y):
+	def fit(self,X,Y,showDraw=False):
 		num_class=len(set(Y))
 		try: 
 			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
-			self.drawFit(data,err,"data","error",data,update,"data","update",data,time,"data","time","Eccw")
-			return train_accuracy	    
+		
+			self.update=numpy.concatenate((self.update,update))
+			self.data=numpy.concatenate((self.data,data))
+			self.iter=numpy.concatenate((self.iter,iter))
+			self.err=numpy.concatenate((self.err,err))
+			time=time+self.time[-1]
+			self.time=numpy.concatenate((self.time,time))
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Eccw")	
+			return self.train_accuracy,self.data,self.err,self.time  
 		except AttributeError as e:
 			self.classifier=pysol.SOL('Eccw',num_class,**self.params)
-			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
-			self.drawFit(data,err,"data","error",data,update,"data","update",data,time,"data","time","Eccw")
-			return train_accuracy
+			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
 			
-	def score(self,X,Y):
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Eccw")
+			return self.train_accuracy,self.data,self.err,self.time 
+			
+	def score(self,X,Y,showDraw=False):
 		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
-		self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Eccw ")
+		
+		if(showDraw == True):
+			self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Eccw")
+		
 		return accuracy,auc
 
 
 
 class Erda_l1(Algorithm):
-	def __init__(self, **params):
-		self.params = params
+	def __init__(self,**params):
+		self.params=params
 
-	def fit(self, X, Y):
-		[Y_new, self.old_to_new, self.new_to_old, num_class] = target_process.translate(Y)
-		try:
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
+	def fit(self,X,Y,showDraw=False):
+		num_class=len(set(Y))
+		try: 
+			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
+		
+			self.update=numpy.concatenate((self.update,update))
+			self.data=numpy.concatenate((self.data,data))
+			self.iter=numpy.concatenate((self.iter,iter))
+			self.err=numpy.concatenate((self.err,err))
+			time=time+self.time[-1]
+			self.time=numpy.concatenate((self.time,time))
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Erda_l1")	
+			return self.train_accuracy,self.data,self.err,self.time  
 		except AttributeError as e:
-			self.classifier = pysol.SOL('erda-l1', num_class, **self.params)
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
+			self.classifier=pysol.SOL('Erda_l1',num_class,**self.params)
+			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Erda_l1")
+			return self.train_accuracy,self.data,self.err,self.time 
+			
+	def score(self,X,Y,showDraw=False):
+		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
+		
+		if(showDraw == True):
+			self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Erda_l1")
+		
+		return accuracy,auc
 
 
 
 class Fobos_l1(Algorithm):
-	def __init__(self, **params):
-		self.params = params
+	def __init__(self,**params):
+		self.params=params
 
-	def fit(self, X, Y):
-		[Y_new, self.old_to_new, self.new_to_old, num_class] = target_process.translate(Y)
-		try:
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
+	def fit(self,X,Y,showDraw=False):
+		num_class=len(set(Y))
+		try: 
+			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
+		
+			self.update=numpy.concatenate((self.update,update))
+			self.data=numpy.concatenate((self.data,data))
+			self.iter=numpy.concatenate((self.iter,iter))
+			self.err=numpy.concatenate((self.err,err))
+			time=time+self.time[-1]
+			self.time=numpy.concatenate((self.time,time))
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Fobos_l1")	
+			return self.train_accuracy,self.data,self.err,self.time 
 		except AttributeError as e:
-			self.classifier = pysol.SOL('fobos-l1', num_class, **self.params)
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
+			self.classifier=pysol.SOL('Fobos_l1',num_class,**self.params)
+			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Fobos_l1")
+			return self.train_accuracy,self.data,self.err,self.time 
+			
+	def score(self,X,Y,showDraw=False):
+		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
+		
+		if(showDraw == True):
+			self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Fobos_l1")
+		
+		return accuracy,auc
 
 
 
 class Fofs(Algorithm):
-	def __init__(self, **params):
-		self.params = params
+	def __init__(self,**params):
+		self.params=params
 
-	def fit(self, X, Y):
-		[Y_new, self.old_to_new, self.new_to_old, num_class] = target_process.translate(Y)
-		try:
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
+	def fit(self,X,Y,showDraw=False):
+		num_class=len(set(Y))
+		try: 
+			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
+		
+			self.update=numpy.concatenate((self.update,update))
+			self.data=numpy.concatenate((self.data,data))
+			self.iter=numpy.concatenate((self.iter,iter))
+			self.err=numpy.concatenate((self.err,err))
+			time=time+self.time[-1]
+			self.time=numpy.concatenate((self.time,time))
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Fofs")	
+			return self.train_accuracy,self.data,self.err,self.time  
 		except AttributeError as e:
-			self.classifier = pysol.SOL('fofs', num_class, **self.params)
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
+			self.classifier=pysol.SOL('Fofs',num_class,**self.params)
+			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Fofs")
+			return self.train_accuracy,self.data,self.err,self.time 
+			
+	def score(self,X,Y,showDraw=False):
+		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
+		
+		if(showDraw == True):
+			self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Fofs")
+		
+		return accuracy,auc
 
 
 
 class Perceptron(Algorithm):
-	def __init__(self, **params):
-		self.params = params
+	def __init__(self,**params):
+		self.params=params
 
-	def fit(self, X, Y):
-		[Y_new, self.old_to_new, self.new_to_old, num_class] = target_process.translate(Y)
-		try:
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
+	def fit(self,X,Y,showDraw=False):
+		num_class=len(set(Y))
+		try: 
+			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
+		
+			self.update=numpy.concatenate((self.update,update))
+			self.data=numpy.concatenate((self.data,data))
+			self.iter=numpy.concatenate((self.iter,iter))
+			self.err=numpy.concatenate((self.err,err))
+			time=time+self.time[-1]
+			self.time=numpy.concatenate((self.time,time))
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Perceptron")	
+			return self.train_accuracy,self.data,self.err,self.time 
 		except AttributeError as e:
-			self.classifier = pysol.SOL('perceptron', num_class, **self.params)
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
+			self.classifier=pysol.SOL('Perceptron',num_class,**self.params)
+			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Perceptron")
+			return self.train_accuracy,self.data,self.err,self.time 
+			
+	def score(self,X,Y,showDraw=False):
+		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
+		
+		if(showDraw == True):
+			self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Perceptron")
+		
+		return accuracy,auc
 
 
 
 class Pet(Algorithm):
-	def __init__(self, **params):
-		self.params = params
+	def __init__(self,**params):
+		self.params=params
 
-	def fit(self, X, Y):
-		[Y_new, self.old_to_new, self.new_to_old, num_class] = target_process.translate(Y)
-		try:
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
+	def fit(self,X,Y,showDraw=False):
+		num_class=len(set(Y))
+		try: 
+			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
+		
+			self.update=numpy.concatenate((self.update,update))
+			self.data=numpy.concatenate((self.data,data))
+			self.iter=numpy.concatenate((self.iter,iter))
+			self.err=numpy.concatenate((self.err,err))
+			time=time+self.time[-1]
+			self.time=numpy.concatenate((self.time,time))
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Pet")	
+			return self.train_accuracy,self.data,self.err,self.time  
 		except AttributeError as e:
-			self.classifier = pysol.SOL('pet', num_class, **self.params)
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
+			self.classifier=pysol.SOL('Pet',num_class,**self.params)
+			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Pet")
+			return self.train_accuracy,self.data,self.err,self.time 
+			
+	def score(self,X,Y,showDraw=False):
+		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
+		
+		if(showDraw == True):
+			self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Pet")
+		
+		return accuracy,auc
 
 
 
 class Rda(Algorithm):
-	def __init__(self, **params):
-		self.params = params
+	def __init__(self,**params):
+		self.params=params
 
-	def fit(self, X, Y):
-		[Y_new, self.old_to_new, self.new_to_old, num_class] = target_process.translate(Y)
-		try:
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
+	def fit(self,X,Y,showDraw=False):
+		num_class=len(set(Y))
+		try: 
+			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
+		
+			self.update=numpy.concatenate((self.update,update))
+			self.data=numpy.concatenate((self.data,data))
+			self.iter=numpy.concatenate((self.iter,iter))
+			self.err=numpy.concatenate((self.err,err))
+			time=time+self.time[-1]
+			self.time=numpy.concatenate((self.time,time))
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Rda")	
+			return self.train_accuracy,self.data,self.err,self.time  
 		except AttributeError as e:
-			self.classifier = pysol.SOL('rda', num_class, **self.params)
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
+			self.classifier=pysol.SOL('Rda',num_class,**self.params)
+			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Rda")
+			return self.train_accuracy,self.data,self.err,self.time 
+			
+	def score(self,X,Y,showDraw=False):
+		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
+		
+		if(showDraw == True):
+			self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Rda")
+		
+		return accuracy,auc
 
 
 
 class Rda_l1(Algorithm):
-	def __init__(self, **params):
-		self.params = params
+	def __init__(self,**params):
+		self.params=params
 
-	def fit(self, X, Y):
-		[Y_new, self.old_to_new, self.new_to_old, num_class] = target_process.translate(Y)
-		try:
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
+	def fit(self,X,Y,showDraw=False):
+		num_class=len(set(Y))
+		try: 
+			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
+		
+			self.update=numpy.concatenate((self.update,update))
+			self.data=numpy.concatenate((self.data,data))
+			self.iter=numpy.concatenate((self.iter,iter))
+			self.err=numpy.concatenate((self.err,err))
+			time=time+self.time[-1]
+			self.time=numpy.concatenate((self.time,time))
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Rda_l1")	
+			return self.train_accuracy,self.data,self.err,self.time  
 		except AttributeError as e:
-			self.classifier = pysol.SOL('rda-l1', num_class, **self.params)
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
+			self.classifier=pysol.SOL('Rda_l1',num_class,**self.params)
+			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Rda_l1")
+			return self.train_accuracy,self.data,self.err,self.time 
+			
+	def score(self,X,Y,showDraw=False):
+		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
+		
+		if(showDraw == True):
+			self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Rda_l1")
+		
+		return accuracy,auc
 
 
 
 class Sofs(Algorithm):
-	def __init__(self, **params):
-		self.params = params
+	def __init__(self,**params):
+		self.params=params
 
-	def fit(self, X, Y):
-		[Y_new, self.old_to_new, self.new_to_old, num_class] = target_process.translate(Y)
-		try:
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
+	def fit(self,X,Y,showDraw=False):
+		num_class=len(set(Y))
+		try: 
+			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
+		
+			self.update=numpy.concatenate((self.update,update))
+			self.data=numpy.concatenate((self.data,data))
+			self.iter=numpy.concatenate((self.iter,iter))
+			self.err=numpy.concatenate((self.err,err))
+			time=time+self.time[-1]
+			self.time=numpy.concatenate((self.time,time))
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Sofs")	
+			return self.train_accuracy,self.data,self.err,self.time 
 		except AttributeError as e:
-			self.classifier = pysol.SOL('sofs', num_class, **self.params)
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
+			self.classifier=pysol.SOL('Sofs',num_class,**self.params)
+			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Sofs")
+			return self.train_accuracy,self.data,self.err,self.time 
+			
+	def score(self,X,Y,showDraw=False):
+		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
+		
+		if(showDraw == True):
+			self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Sofs")
+		
+		return accuracy,auc
 
 
 
 
 
 class Sop(Algorithm):
-	def __init__(self, **params):
-		self.params = params
+	def __init__(self,**params):
+		self.params=params
 
-	def fit(self, X, Y):
-		[Y_new, self.old_to_new, self.new_to_old, num_class] = target_process.translate(Y)
-		try:
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
+	def fit(self,X,Y,showDraw=False):
+		num_class=len(set(Y))
+		try: 
+			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
+		
+			self.update=numpy.concatenate((self.update,update))
+			self.data=numpy.concatenate((self.data,data))
+			self.iter=numpy.concatenate((self.iter,iter))
+			self.err=numpy.concatenate((self.err,err))
+			time=time+self.time[-1]
+			self.time=numpy.concatenate((self.time,time))
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Sop")	
+			return self.train_accuracy,self.data,self.err,self.time 
 		except AttributeError as e:
-			self.classifier = pysol.SOL('sop', num_class, **self.params)
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
+			self.classifier=pysol.SOL('Sop',num_class,**self.params)
+			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Sop")
+			return self.train_accuracy,self.data,self.err,self.time 
+			
+	def score(self,X,Y,showDraw=False):
+		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
+		
+		if(showDraw == True):
+			self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Sop")
+		
+		return accuracy,auc
 
 
-
+		
 class Stg(Algorithm):
-	def __init__(self, **params):
-		self.params = params
+	def __init__(self,**params):
+		self.params=params
 
-	def fit(self, X, Y):
-		[Y_new, self.old_to_new, self.new_to_old, num_class] = target_process.translate(Y)
-		try:
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
+	def fit(self,X,Y,showDraw=False):
+		num_class=len(set(Y))
+		try: 
+			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
+		
+			self.update=numpy.concatenate((self.update,update))
+			self.data=numpy.concatenate((self.data,data))
+			self.iter=numpy.concatenate((self.iter,iter))
+			self.err=numpy.concatenate((self.err,err))
+			time=time+self.time[-1]
+			self.time=numpy.concatenate((self.time,time))
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Stg")	
+			return self.train_accuracy,self.data,self.err,self.time  
 		except AttributeError as e:
-			self.classifier = pysol.SOL('stg', num_class, **self.params)
-			train_accuracy = self.classifier.fit(X, Y_new)
-			return train_accuracy
-"""
+			self.classifier=pysol.SOL('Stg',num_class,**self.params)
+			self.train_accuracy,self.update,self.data,self.iter,self.err,self.time = self.classifier.fit(X,Y)
+			
+			if(showDraw == True):
+				self.drawFit(self.data,self.err,"data","error",self.data,self.update,"data","update",self.data,self.time,"data","time","Stg")
+			return self.train_accuracy,self.data,self.err,self.time 
+			
+	def score(self,X,Y,showDraw=False):
+		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
+		
+		if(showDraw == True):
+			self.drawScore(fpr_fig,tpr_fig,"fpr","tpr",fpr_tab,tpr_tab,"fpr","tpr","Stg")
+		
+		return accuracy,auc

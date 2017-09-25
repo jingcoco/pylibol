@@ -1,23 +1,19 @@
 import numpy
 import scipy
-import time
 from sklearn.datasets import load_svmlight_file
-from classifiers import Ogd
+from classifiers import Ada_fobos_l1,Ada_fobos,Ada_rda,Ada_rda_l1,Erda_l1,Fobos_l1,Rda_l1
 
-X_train,Y_train=load_svmlight_file("../data/a1a.t")
-X_test,Y_test=load_svmlight_file("../data/a1a")
+X_train,Y_train=load_svmlight_file("../data/a7a")
+X_test,Y_test=load_svmlight_file("../data/a7a.t")
 
-
-start_time = time.time()
-clf=Ogd()
-train_accuracy=clf.fit(X_train,Y_train,True)
-
+clf=Ada_rda_l1()
+train_accuracy,data,err,fit_time=clf.fit(X_train,Y_train,True)
 
 print("training accuracy:")
 print(train_accuracy)
-train_time = time.time() - start_time
+
 print("training time")
-print(train_time)
+print(fit_time[-1])
 
 print("Model sparsity")
 print(clf.sparsity)
@@ -38,4 +34,7 @@ print(test_accuracy)
 print("AUC")
 print(auc)
 
-clf.save("ogd_model_pylibol")
+
+
+
+
