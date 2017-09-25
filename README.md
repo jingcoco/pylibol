@@ -22,7 +22,7 @@ Both the python scripts and C++ executables & Libraries are dependent on the sam
 
 The project is managed by **CMake**. There exists a **CMakeLists.txt** in the root directory of SOL. Note that all the following are tested on "*CMake 2.8.12*". Lower versions of cmake may work, but are not ensured.
 
-###Getting the code
+### Getting the code
 
 The latest version of SOL is always available via "github" by invoking one
 of the following:
