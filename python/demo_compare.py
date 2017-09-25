@@ -50,9 +50,8 @@ ECCW_train_accuracy,ECCW_data,ECCW_error,ECCW_time=clf10.fit(X_train,Y_train)
 accuracy,auc,ECCW_tpr_fig,ECCW_fpr_fig= clf10.score(X_test,Y_test)
 
 
-
-
-
+"""Draw figure: Compare error
+"""
 plt.figure("Compare error")
 plt.plot(OGD_data,OGD_error,"ro-",label="OGD",markersize=5,linewidth=2)
 plt.plot(PA_data,PA_error,"bo-",label="PA",markersize=5)
@@ -71,6 +70,8 @@ plt.ylabel("error rate")
 plt.legend(loc="upper right")
 
 
+"""Draw figure: Compare time
+"""
 plt.figure("Compare time")
 plt.plot(OGD_data,OGD_time,"ro-",label="OGD",markersize=5)
 plt.plot(PA_data,PA_time,"bo-",label="PA",markersize=5)
@@ -89,6 +90,8 @@ plt.ylabel("time")
 plt.legend()
 
 
+"""Draw figure: Compare Roc
+"""
 plt.figure("TPR VS FPR")
 plt.semilogx(OGD_tpr_fig[2:],OGD_fpr_fig[2:],"ro-",label="OGD",markersize=5)
 plt.semilogx(PA_tpr_fig[2:],PA_fpr_fig[2:],"bo-",label="PA",markersize=5)

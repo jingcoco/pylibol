@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 class Algorithm():
 	def __init__(self, **params):
 		self.params = params
+		
 
 	def fit(self,X,Y,showDraw):
 		pass
@@ -15,6 +16,18 @@ class Algorithm():
 
 	def predict(self, X):
 		return self.classifier.predict(X)
+		"""Predict class labels for samples in X
+
+        Parameters
+        ----------
+        X: str
+			data path or {array-like or sparse matrix}, shape = [n_samples, n_features]
+            Test vector, where n_samples is the number of samples and n_features is the number of features
+
+        Returns
+        -------
+        array, shape = [n_samples]
+        """
 
 	def decision_function(self, X, Y=None, get_label=False):
 		Y_scores = self.classifier.decision_function(X, Y, get_label)

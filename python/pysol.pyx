@@ -140,6 +140,7 @@ cdef class SOL:
         return params
     cpdef np.ndarray[float, ndim=1, mode="c"] get_weight(self, cls_id=0):
         """Get Model Weight,added by Jing
+		
         input cls_id: the id of classifier, in range 0 to cls_num-1
         output an numpy array of classifier for the cls_id 's class.
         for binary classifier, cls_id is 0 and cls_num=1
@@ -311,8 +312,7 @@ cdef class SOL:
     def predict(self, param1, param2 = None, get_labels = False):
         """Predict class labels for samples in X
 
-        Parameters
-        ----------
+       
         Parameters
         ----------
         param1: str, data path or {array-like or sparse matrix}, shape = [n_samples, n_features]
