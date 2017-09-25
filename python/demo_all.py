@@ -1,12 +1,12 @@
 import numpy
 import scipy
 from sklearn.datasets import load_svmlight_file
-from classifiers import Ada_fobos_l1,Ada_fobos,Ada_rda,Ada_rda_l1,Erda_l1,Fobos_l1,Rda_l1
+from classifiers import Ada_FOBOS_L1,Ada_FOBOS,Ada_RDA,Ada_RDA_L1,ERDA_L1,FOBOS_L1,RDA_L1,SOP,ALMA2
 
 X_train,Y_train=load_svmlight_file("../data/a7a")
 X_test,Y_test=load_svmlight_file("../data/a7a.t")
 
-clf=Ada_rda_l1()
+clf=ALMA2()
 train_accuracy,data,err,fit_time=clf.fit(X_train,Y_train,True)
 
 print("training accuracy:")
@@ -28,7 +28,7 @@ print("Predict confidence scores for samples in X")
 print(clf.decision_function(X_test))
 
 
-test_accuracy,auc=clf.score(X_test,Y_test,True)
+test_accuracy,auc,tpr_fig,fpr_fig=clf.score(X_test,Y_test,True)
 print("Test accuracy")
 print(test_accuracy)
 print("AUC")
