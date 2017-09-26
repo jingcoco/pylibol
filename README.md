@@ -4,7 +4,7 @@ Pylibol - Python Library for Online Learning Algorithms
 
 About Pylibol
 ====================================================
-Pylibol is an open-source library for large-scale online learning with high-dimensional data. The library provides a family of regular and sparse online learning algorithms for large-scale binary and multi-class classification tasks with high efficiency, scalability, portability, and extensibility.Users can use pylibol as simple as sklearn. The underlying code for Pylibol uses C++, so it is much faster than sklearn. Pylibol is not only a machine learning toolbox, but also a comprehensive experimental platform for online learning research. 
+Pylibol is an open-source library for large-scale online learning with high-dimensional data. The library provides a family of regular and sparse online learning algorithms for large-scale binary and multi-class classification tasks with high efficiency, scalability, portability, and extensibility.Users can use pylibol as simple as sklearn. The core code for Pylibol uses C++, so it is much faster than sklearn. Pylibol is not only a machine learning toolbox, but also a comprehensive experimental platform for online learning research. 
 Specifically, Pylibol consists of a family of:
 + First-order Online Learning algorithms:
     - Perceptron: The Perceptron Algorithm(Rosenblatt, 1958)
