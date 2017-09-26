@@ -5,8 +5,8 @@ from sklearn.datasets import load_svmlight_file
 import matplotlib.pyplot as plt
 from classifiers import OGD,PA,PA1,PA2,AROW,CW,Ada_FOBOS,Ada_FOBOS_L1,FOBOS_L1,Ada_RDA,Ada_RDA_L1,ALMA2,ECCW,ERDA_L1,FOFS,Perceptron,PET,RDA,RDA_L1,SOFS,SOP,STG
 
-X_train,Y_train=load_svmlight_file("../data/a7a")
-X_test,Y_test=load_svmlight_file("../data/a7a.t")
+X_train,Y_train=load_svmlight_file("../data/a9a")
+X_test,Y_test=load_svmlight_file("../data/a9a.t")
 
 
 clf=OGD()
@@ -92,21 +92,21 @@ plt.legend()
 
 """Draw figure: Compare Roc
 """
-plt.figure("TPR VS FPR")
-plt.semilogx(OGD_tpr_fig[2:],OGD_fpr_fig[2:],"ro-",label="OGD",markersize=5)
-plt.semilogx(PA_tpr_fig[2:],PA_fpr_fig[2:],"bo-",label="PA",markersize=5)
-plt.semilogx(PA1_tpr_fig[2:],PA1_fpr_fig[2:],"go-",label="PA1",markersize=5)
-plt.semilogx(PA2_tpr_fig[2:],PA2_fpr_fig[2:],"ko-",label="PA2",markersize=5)
-plt.semilogx(AROW_tpr_fig[2:],AROW_fpr_fig[2:],"mo-",label="Arow",markersize=5)
-plt.semilogx(CW_tpr_fig[2:],CW_fpr_fig[2:],"yo-",label="CW",markersize=5)
-plt.semilogx(Ada_FOBOS_tpr_fig[2:],Ada_FOBOS_fpr_fig[2:],"co-",label="Ada_FOBOS",markersize=5)
-plt.semilogx(Ada_RDA_tpr_fig[2:],Ada_RDA_fpr_fig[2:],"r*-",label="Ada_FOBOS_data",markersize=5)
-plt.semilogx(ALMA2_tpr_fig[2:],ALMA2_fpr_fig[2:],"b*-",label="ALMA2",markersize=5)
-plt.semilogx(ECCW_tpr_fig[2:],ECCW_fpr_fig[2:],"g*-",label="ECCW",markersize=5)
+plt.figure("FPR VS TPR")
+plt.plot(OGD_fpr_fig,OGD_tpr_fig,"ro-",label="OGD",markersize=5)
+plt.plot(PA_fpr_fig,PA_tpr_fig,"bo-",label="PA",markersize=5)
+plt.plot(PA1_fpr_fig,PA1_tpr_fig,"go-",label="PA1",markersize=5)
+plt.plot(PA2_fpr_fig,PA2_tpr_fig,"ko-",label="PA2",markersize=5)
+plt.plot(AROW_fpr_fig,AROW_tpr_fig,"mo-",label="Arow",markersize=5)
+plt.plot(CW_fpr_fig,CW_tpr_fig,"yo-",label="CW",markersize=5)
+plt.plot(Ada_FOBOS_fpr_fig,Ada_FOBOS_tpr_fig,"co-",label="Ada_FOBOS",markersize=5)
+plt.plot(Ada_RDA_fpr_fig,Ada_RDA_tpr_fig,"r*-",label="Ada_FOBOS_data",markersize=5)
+plt.plot(ALMA2_fpr_fig,ALMA2_tpr_fig,"b*-",label="ALMA2",markersize=5)
+plt.plot(ECCW_fpr_fig,ECCW_tpr_fig,"g*-",label="ECCW",markersize=5)
 
 plt.grid(True)
-plt.xlabel("TPR")
-plt.ylabel("FPR")
+plt.xlabel("FPR")
+plt.ylabel("TPR")
 plt.legend()
 
 plt.show()

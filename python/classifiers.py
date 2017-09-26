@@ -32,37 +32,74 @@ class Algorithm():
 	def decision_function(self, X, Y=None, get_label=False):
 		Y_scores = self.classifier.decision_function(X, Y, get_label)
     		return Y_scores
+		"""Predict confidence scores for samples in X
 
+        Parameters
+        ----------
+        X: str
+			data path or {array-like or sparse matrix}, shape = [n_samples, n_features]
+            Test vector, where n_samples is the number of samples and n_features is the number of features
+        Y: str
+			data type or None
+        get_labels: bool
+            Whether return labels
+
+        Returns
+        -------
+        Y_scores:array
+			shape = [n_samples, n_classifiers]
+        """
+			
 	@property
 	def coef_(self, cls_id=0):
 		return self.classifier.get_weight(cls_id)
+		"""Get the weight of model
 
+        Parameters
+        ----------
+        cls_id: array
+			the id of classifier, in range 0 to cls_num-1,output an numpy array of classifier for the cls_id 's class.
+        
+        Returns
+        -------
+		array, shape = [n_samples]
+			the first element is bias
+			
+        """
+		
 	@property
 	def sparsity(self):
 		return self.classifier.sparsity
 
 	def save(self, model_path):
 		return self.classifier.save(model_path)
+		"""Save the model to a file
+
+        Parameters
+        ----------
+        model_path: str
+            path to save the model
+			
+        """
 		
 	def drawFit(self,X1_axis,Y1_axis,X1_name,Y1_name,X2_axis,Y2_axis,X2_name,Y2_name,X3_axis,Y3_axis,X3_name,Y3_name,algo_name):
-	
+	"""Draw thress figure: Error Rate, Num of SV, Time
+
+        """
 		plt.figure("Error Rate")
-		plt.plot(X1_axis,Y1_axis,"ro")
-		plt.plot(X1_axis,Y1_axis,label=algo_name,color="red",linewidth=2)
+		plt.plot(X1_axis,Y1_axis,"ro-",label=algo_name,markersize=5)
 		plt.xlabel(X1_name)
 		plt.ylabel(Y1_name)
 		plt.legend()
 		
 		plt.figure("Num of SV")
-		plt.plot(X2_axis,Y2_axis,"bo")
-		plt.plot(X2_axis,Y2_axis,label=algo_name,color="blue",linewidth=2)
+		plt.plot(X2_axis,Y2_axis,"bo-",label=algo_name,markersize=5)
 		plt.xlabel(X2_name)
 		plt.ylabel(Y2_name)
 		plt.legend()
 		
 		plt.figure("Time")
-		plt.plot(X3_axis,Y3_axis,"go")
-		plt.plot(X3_axis,Y3_axis,label=algo_name,color="green",linewidth=2)
+		plt.plot(X3_axis,Y3_axis,"go-",label=algo_name,markersize=5)
 		plt.xlabel(X3_name)
 		plt.ylabel(Y3_name)
 		plt.legend()
@@ -70,9 +107,15 @@ class Algorithm():
 		plt.show()
 		
 	def drawScore(self,X1_axis,Y1_axis,X1_name,Y1_name,X2_axis,Y2_axis,X2_name,Y2_name,algo_name):
-		plt.figure("TPR VS FPR")
-		plt.semilogx(X1_axis,Y1_axis,"r*")
-		plt.semilogx(X1_axis,Y1_axis,label=algo_name,color="red",linewidth=2)
+		
+		"""
+		Draw a figure and a table
+		figure:FPR VS TPR 
+		table: the value of TPR and FPR   
+
+        """
+		plt.figure("FPR VS TPR")
+		plt.plot(X1_axis,Y1_axis,"r*-",label=algo_name,markersize=5)
 		plt.xlabel(X1_name)
 		plt.ylabel(Y1_name)
 		plt.legend()
@@ -99,6 +142,25 @@ class OGD(Algorithm):
 		self.params=params
 
 	def fit(self,X,Y,showDraw=False):
+		"""learn data from numpy array
+
+        Parameters
+        ----------
+        X: str
+			data path or {array-like or sparse matrix}, shape = [n_samples, n_features]
+            Training vector, where n_samples is the number of samples and n_features is the number of features
+        Y: str
+			data type or array-like, shape=[n_samples]
+            Target label vector relative to X
+        showDraw: Bool
+            Set to True to draw figures
+
+        Returns
+        -------
+        float: Train_accuracy
+		array: data,error rate, training time
+        """
+		
 		num_class=len(set(Y))
 		try: 
 			train_accuracy,update,data,iter,err,time = self.classifier.fit(X,Y)
@@ -123,6 +185,22 @@ class OGD(Algorithm):
 			return self.train_accuracy,self.data,self.err,self.time
 			
 	def score(self,X,Y,showDraw=False):
+		"""Returns the mean accuracy on the given test data and labels
+
+        Parameters
+        ----------
+        X: str
+			data path or {array-like or sparse matrix}, shape = [n_samples, n_features]
+            Test vector, where n_samples is the number of samples and n_features is the number of features
+        Y: str
+			data type or array-like, shape=[n_samples]
+            Target label vector relative to X
+
+        Returns
+        -------
+        float: test accuracy, auc
+		array: tpr_fig,fpr_fig
+        """
 		accuracy,tpr_fig,fpr_fig,tpr_tab,fpr_tab,auc = self.classifier.score(X,Y)
 		
 		if(showDraw == True):

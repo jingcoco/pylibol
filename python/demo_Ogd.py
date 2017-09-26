@@ -34,15 +34,8 @@ print(test_accuracy)
 print("AUC")
 print(auc)
 
-clf.save("ogd_model_pylibol")
+clf.save("OGD_model_pylibol")
 
-"""
-print("along the learning process")
-clf_2=Ogd(eta=0.1,power_t=0.5)
-print(clf_2.fit(X_train,Y_train))
-print(clf_2.fit(X_train,Y_train))
-print(clf_2.fit(X_train,Y_train))
-print(clf_2.fit(X_train,Y_train))
-"""
+
 
 
