@@ -1,7 +1,34 @@
-# pylibol
+Pylibol - Python Library for Online Learning Algorithms 
+============================================
 
-LIBOL with python interface that close to sklearn.
 
+About Pylibol
+====================================================
+Pylibol is an open-source library for large-scale online learning with high-dimensional data. The library provides a family of regular and sparse online learning algorithms for large-scale binary and multi-class classification tasks with high efficiency, scalability, portability, and extensibility.Users can use pylibol as simple as sklearn. The underlying code for Pylibol uses C++, so it is much faster than sklearn. Pylibol is not only a machine learning toolbox, but also a comprehensive experimental platform for online learning research. 
+Specifically, Pylibol consists of a family of:
++ First-order Online Learning algorithms:
+    - Perceptron: The Perceptron Algorithm(Rosenblatt, 1958)
+    - OGD: Online Gradient Descent(Zinkevich, 2003)
+    - PA: Online Passive Aggressive Algorithms(Crammer et al., 2006)
+    - ALMA: Approximate Large Margin Algorithm(Gentile, 2002)
+    - RDA: Regularized Dual Averaging(Xiao, 2010)
++ Second-order Online Learning algorithms:
+    - SOP: Second-Order Perceptron(Cesa-Bianchi et al., 2005)
+    - CW: Confidence Weighted Learning(Dredze et al., 2008)
+    - ECCW: Exactly Convex Confidence Weighted Learning(Crammer et al., 2008)
+    - AROW: Adaptive Regularized Online Learning(Crammer et al., 2009)
+    - Ada-FOBOS: Adaptive Regularized Online Learning(Crammer et al., 2009)
+    - Ada-RDA: Adaptive Regularized Dual Averaging(Crammer et al., 2009)
+
++ First-order Sparse Online Learning algorithms:
+    - STG: sparse online learning via truncated graidient (Langford et al., 2009);
+    - FOBOS-L1: l1 Regularized Forward backward splitting (Duchi et al., 2009);
+    - RDA-L1: Mixed l1/l2^2 Regularized Dual averaging(Xiao, 2010);
+    - ERDA-L1: Enhanced l1/l2^2 Regularized Dual averaging(Xiao, 2010);
+
++ Second-order Sparse Online Learning algorithms:
+    - Ada-FOBOS-L1: Ada-FOBOS with l1 regularization
+    - Ada-RDA-L1: Ada-RDA with l1 regularization
 Installation
 ===========================================================================
 
@@ -196,4 +223,23 @@ We highly recommend users to install python packages in a virtual enviroment.
 
         $ export LC_ALL=en_US.UTF-8
         $ export LANG=en_US.UTF-8
+
+Quick Start
+===========
+Use "demo" to get started.
+
+
+License and Citation
+======================
+
+Pylibol is released under the Apache 2.0 open source license.
+
+
+Additional Information
+======================
+
+For any questions and comments, please send your email to
+chhoi@smu.edu.sg
+
+Released date: 26 September, 2017.
 
